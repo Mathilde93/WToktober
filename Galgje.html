@@ -1,0 +1,141 @@
+<style>
+</style>
+
+<script>// galgje
+// 1 Functionele Doelstelling (opknippen -> ja)(concreet)(niet-technisch)
+// letter invoeren zien
+// 2 Technische Strategie (func doel)(wel-technisch)(tijd-precies)
+// invoerbox hebben invoeren button onclick || onkeyup veld
+// 3 Coderen (funct doel --> 1) OPRUIMEN
+// 
+  var hetWoord;
+  function beginnen(){
+    document.getElementById("instructie1").hidden = true;
+    document.getElementById("invoerveld").hidden = true;
+    document.getElementById("startknop").hidden = true;
+    document.getElementById("letterraden").hidden = false;
+    document.getElementById("instructie2").hidden = false;
+    document.getElementById("buttonraad").hidden = false;
+    document.getElementById("Galg").hidden = false;
+    document.getElementById("Geradenletters").hidden = false;
+    hetWoord = document.getElementById("invoerveld").value;
+    maakWoord();
+  }
+
+  var woord = "";
+  function maakWoord(){
+    var x = hetWoord.length;
+    for(var i = 0 ; i < x ; i++){
+      woord += "-";
+    }
+    document.getElementById("uitkomst").innerHTML = woord;
+  }
+
+  var goed = 0
+  var fout = 1
+  var geraden = ""
+  
+  function raadletter(){
+    var letterbox = document.getElementById("letterraden");
+    var letter = letterbox.value;
+    letterbox.value = "";
+
+    
+    for (var i = 0 ; i < hetWoord.length ; i++){
+      // Letter is goed geraden
+        if(hetWoord.charAt(i) == letter) { 
+          goed++
+          var oudewoord = woord
+          var nieuwwoord = ""
+          for(var j = 0 ; j < i ; j++){
+            // Als er al een letter is geraden deze niet vervangen door 
+            // streepje dus check of hier al een letter staat
+            if(oudewoord.charAt(j) != "-") {
+              var oudeletter = oudewoord.charAt(j)
+              nieuwwoord += oudeletter
+            } else {
+              nieuwwoord += "-";
+            }
+            }
+            // Tot positie gerade letter streepjes of oude letters
+            nieuwwoord += letter // nieuwe gerade letter
+
+            for(var k = i+1 ; k < hetWoord.length ; k++){
+              if(oudewoord.charAt(k) != "-") {
+              var oudeletter = oudewoord.charAt(k)
+              nieuwwoord += oudeletter
+            } else {
+              nieuwwoord += "-";
+            }
+            }
+            woord = nieuwwoord
+            } 
+    }
+
+    if(goed == 0) {
+        geraden += letter
+        fout++
+        document.getElementById('Galg').src= "Galgje" +fout+ ".jpg"
+                if(fout == 7) {
+                document.getElementById("letterraden").hidden = true;
+                document.getElementById("instructie2").hidden = true;
+                document.getElementById("buttonraad").hidden = true;
+                document.getElementById("verloren").hidden = false;
+                }
+                } else {
+                  goed = 0
+                }
+    
+
+    if (woord.search("-") == -1) {
+      document.getElementById("gewonnen").hidden = false;
+    }
+
+
+    document.getElementById("uitkomst").innerHTML = woord;
+    document.getElementById("raaddiv").innerHTML = geraden;
+
+    // console test
+    console.log("het woord is " + hetWoord);
+    console.log("Laatst gerade letter is " + letter)
+    console.log("Woord in scherm is " + woord)
+    console.log("Het nieuwe woord is " + nieuwwoord)
+    console.log("Aantal goed" + goed)
+    console.log("Aantal fout" + fout)
+    console.log("Geraden letters" + geraden)
+}
+
+  function checkit(){
+    console.log("het woord is " + hetWoord);
+    console.log("Laatst gerade letter is " + letter)
+    console.log("Woord in scherm is " + woord)
+    console.log("Het nieuwe woord is " + nieuwwoord)
+    console.log("Aantal goed" + goed)
+    console.log("Aantal fout" + fout)
+}
+
+</script>
+
+<h1>Galgje</h1>
+
+<b id = instructie1 >Speler 1 kies een woord</b>
+<br>
+<input type="password" id="invoerveld" >
+<input type="button" id="startknop" value="beginnen" onclick="beginnen()">
+
+<img id = "Galg" src= "Galgje1.jpg" style = "width:500px" hidden = TRUE >
+<div><h1 id=uitkomst> </h1></div>
+<div><h1 style="color: crimson;" id = verloren hidden = TRUE> 
+  Helaas je hebt verloren</h1>
+</div>
+<div><h1 style="color:green;" id = gewonnen hidden = TRUE> 
+  Gefeliciteerd je hebt gewonnen! </h1>
+</div>
+<b id = instructie2 hidden = TRUE> Speler 2 raad een letter </b>
+<br>
+<input type="text" id="letterraden" hidden = TRUE maxlength = "1">
+<button onclick="raadletter()" id = "buttonraad" hidden = TRUE
+> Raad letter </button>
+<h2 id = Geradenletters hidden = TRUE> Geraden letters </h2>
+<div id = raaddiv><h3> </h3></div>
+
